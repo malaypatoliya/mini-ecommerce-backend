@@ -3,7 +3,14 @@ const db = require("../db/models");
 const getProductList = async () => {
   try {
     const products = await db.products.findAll({
-      include: [{ model: db.category, as: "category" }],
+      attributes: ["uuid", "name", "price", "image_url", "stock", "is_active", "category_id"],
+      include: [
+        {
+          model: db.category,
+          as: "category",
+          attributes: ["uuid", "name", "is_active"]
+        },
+      ],
     });
     return products;
   } catch (error) {
@@ -13,8 +20,27 @@ const getProductList = async () => {
 
 const getProductByUUID = async (uuid) => {
   try {
-    const product = await db.products.findOne({ where: { uuid } });
+    const product = await db.products.findOne({
+      where: { uuid },
+      attributes: ["uuid", "name", "price", "image_url", "stock", "is_active"],
+      include: [
+        {
+          model: db.category,
+          as: "category",
+          attributes: ["uuid", "name", "is_active"]
+        },
+      ],
+    });
     return product;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getProductIdByUUID = async (uuid) => {
+  try {
+    const product = await db.products.findOne({ where: { uuid } });
+    return product ? product.id : null;
   } catch (error) {
     throw error;
   }
@@ -50,6 +76,7 @@ const deleteProduct = async (uuid) => {
 module.exports = {
   getProductList,
   getProductByUUID,
+  getProductIdByUUID,
   createProduct,
   updateProduct,
   deleteProduct,

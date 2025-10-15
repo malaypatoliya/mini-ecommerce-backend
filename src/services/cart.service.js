@@ -1,9 +1,16 @@
 const db = require("../db/models");
 
-const addToCart = async (cartData) => {
+const addToCart = async (userId, cartData) => {
+  console.log('cartData: ', cartData);
+  console.log('userId: ', userId);
   try {
     const { product_id, quantity } = cartData;
-    const existingCartItem = await db.cart.findOne({ where: { product_id: product_id } });
+    const existingCartItem = await db.cart.findOne({
+      where: {
+        product_id,
+        user_id: userId
+      }
+    });
 
     if (existingCartItem) {
       existingCartItem.quantity += quantity;
@@ -11,7 +18,11 @@ const addToCart = async (cartData) => {
       return existingCartItem;
     }
 
-    const newCartItem = await db.cart.create({ product_id, quantity });
+    const newCartItem = await db.cart.create({
+      user_id: userId,
+      product_id,
+      quantity
+    });
     return newCartItem;
   } catch (error) {
     throw error;
@@ -32,19 +43,30 @@ const updateCartItem = async (product_id, cartData) => {
   }
 };
 
-const removeCartItem = async (product_id) => {
+const removeCartItem = async (userId, productId) => {
   try {
-    const result = await db.cart.destroy({ where: { product_id } });
+    const result = await db.cart.destroy({
+      where: {
+        user_id: userId,
+        product_id: productId
+      }
+    });
     return result;
   } catch (error) {
     throw error;
   }
 };
 
-const getCartItems = async () => {
+const getCartItems = async (userId) => {
   try {
     const items = await db.cart.findAll({
-      include: [{ model: db.products, as: 'product' }]
+      where: { user_id: userId },
+      attributes: ['id', 'uuid', 'product_id', 'quantity'],
+      include: [{
+        model: db.products,
+        as: 'product',
+        attributes: ['id', 'uuid', 'name', 'price', 'image_url',]
+      }]
     });
     return items;
   } catch (error) {
