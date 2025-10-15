@@ -3,7 +3,6 @@ const { addCartSchema, productIdParamSchema, updateCartSchema } = require("../va
 
 const addToCart = async (req, res) => {
   try {
-
     const { error: bodyError } = addCartSchema.validate(req.body);
     if (bodyError)
       return res.status(400).json({ message: bodyError.details[0].message });
@@ -42,7 +41,6 @@ const removeFromCart = async (req, res) => {
     if (paramError)
       return res.status(400).json({ message: paramError.details[0].message });
 
-    console.log('req.params.productId: ', req.params.productId);
     const removed = await cartService.removeCartItem(req.params.productId);
     if (!removed) return res.status(404).json({ message: "Cart item not found" });
 
