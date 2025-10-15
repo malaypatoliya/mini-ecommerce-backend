@@ -1,0 +1,6 @@
+Run the below commands:
+
+1. npm i
+2. npm run migrate
+3. npm run seed
+4. npm run dev
