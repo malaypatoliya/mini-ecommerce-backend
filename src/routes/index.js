@@ -7,7 +7,7 @@ const { isAuth } = require("../middleware/auth.middleware");
 const router = Router();
 
 router.use("/auth", authRoutes);
-router.use("/products", isAuth, productRoutes);
-router.use("/cart", isAuth, cartRoutes);
+router.use("/products", productRoutes);
+router.use("/cart", cartRoutes);
 
 module.exports = router;

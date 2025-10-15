@@ -140,6 +140,19 @@ const uploadProductImage = async (req, res) => {
   }
 };
 
+const getCategoryList = async (req, res) => {
+  try {
+    const category = await productService.getCategory();
+    return res.status(200).json({
+      message: "Category fetched successfully",
+      data: category,
+    });
+  } catch (error) {
+    console.error("Error in getProductList:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getProductList,
   getProductByUUID,
@@ -147,4 +160,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   uploadProductImage,
+  getCategoryList
 };

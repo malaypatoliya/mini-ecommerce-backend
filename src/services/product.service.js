@@ -73,6 +73,18 @@ const deleteProduct = async (uuid) => {
   }
 };
 
+getCategory = async () => {
+  try {
+    const category = await db.category.findAll({
+      where: { is_active: true },
+      attributes: ["id", "uuid", "name", "is_active"],
+    });
+    return category;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getProductList,
   getProductByUUID,
@@ -80,4 +92,5 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  getCategory
 };

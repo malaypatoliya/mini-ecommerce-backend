@@ -5,11 +5,13 @@ const upload = require("../utils/fileUpload");
 const router = Router();
 
 // Define user routes
+router.get("/category", productController.getCategoryList);
 router.get("/", productController.getProductList);
 router.get("/:uuid", productController.getProductByUUID);
 router.post("/", productController.createProdcut);
 router.put("/:uuid", productController.updateProduct);
 router.delete("/:uuid", productController.deleteProduct);
+
 
 router.post(
   "/updload-image/:uuid",
