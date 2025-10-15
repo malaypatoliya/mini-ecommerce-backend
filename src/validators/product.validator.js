@@ -8,13 +8,16 @@ const createProductSchema = Joi.object({
   image_url: Joi.string().required(),
   category_id: Joi.number().required(),
   is_active: Joi.boolean().optional(),
+  stock: Joi.number().optional(),
 });
 
 const updateProductSchema = Joi.object({
   name: Joi.string().min(3).max(100).optional(),
   price: Joi.number().min(1).optional(),
   image_url: Joi.string().optional(),
+  category_id: Joi.number().optional(),
   is_active: Joi.boolean().optional(),
+  stock: Joi.number().optional(),
 }).min(1);
 
 module.exports = {
